@@ -36,7 +36,7 @@ jobs:
       matrix:
         image_flavor: [main, nvidia]
         base_name: [bazzite, bazzite-surface, bazzite-deck]
-        base_image_name: [kinoite, silverblue]
+        base_image_name: [kinoite]
         major_version: [38]
         include:
           - major_version: 38
@@ -56,20 +56,11 @@ jobs:
       - name: Matrix Variables
         run: |
           echo "BASE_IMAGE_NAME=${{ matrix.base_image_name }}" >> $GITHUB_ENV
-          if [[ "${{ matrix.base_image_name }}" == "silverblue" ]]; then
-              DESKTOP="gnome"
-              if [[ "${{ matrix.image_flavor }}" == "main" ]]; then
-                  echo "IMAGE_NAME=${{ format('{0}-{1}', matrix.base_name, '${DESKTOP}') }}" >> $GITHUB_ENV
-              else
-                  echo "IMAGE_NAME=${{ format('{0}-{1}-{2}', matrix.base_name, '${DESKTOP}', matrix.image_flavor) }}" >> $GITHUB_ENV
-              fi
-          else
-              if [[ "${{ matrix.image_flavor }}" == "main" ]]; then
-                  echo "IMAGE_NAME=${{ matrix.base_name }}" >> $GITHUB_ENV
-              else
+            if [[ "${{ matrix.image_flavor }}" == "main" ]]; then
+                echo "IMAGE_NAME=${{ matrix.base_name }}" >> $GITHUB_ENV
+            else
                   echo "IMAGE_NAME=${{ format('{0}-{1}', matrix.base_name, matrix.image_flavor) }}" >> $GITHUB_ENV
-              fi
-          fi
+            fi
 
       - name: Generate tags
         id: generate-tags
@@ -186,17 +177,17 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Sign container
-      - uses: sigstore/cosign-installer@v3.1.2
-        if: github.event_name != 'pull_request'
+      #- uses: sigstore/cosign-installer@v3.1.2
+      #  if: github.event_name != 'pull_request'
 
-      - name: Sign container image
-        if: github.event_name != 'pull_request'
-        run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}@${TAGS}
-        env:
-          TAGS: ${{ steps.push.outputs.digest }}
-          COSIGN_EXPERIMENTAL: false
-          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+      #- name: Sign container image
+      #  if: github.event_name != 'pull_request'
+      #  run: |
+      #    cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}@${TAGS}
+      #  env:
+      #    TAGS: ${{ steps.push.outputs.digest }}
+      #    COSIGN_EXPERIMENTAL: false
+      #    COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
 
       - name: Echo outputs
         if: github.event_name != 'pull_request'

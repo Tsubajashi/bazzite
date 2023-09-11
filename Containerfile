@@ -60,9 +60,6 @@ RUN rpm-ostree install \
     xrandr \
     rmlint \
     compsize \
-    ddccontrol \
-    ddccontrol-gtk \
-    ddccontrol-db \
     input-remapper \
     system76-scheduler \
     hl2linux-selinux \
@@ -103,34 +100,7 @@ RUN if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
     kpackagetool5 --type=KWin/Script --global --install /tmp/kwin-system76-scheduler-integration && \
     kpackagetool5 --type=Plasma/Wallpaper --global --install /tmp/wallpaper-engine-kde-plugin/plugin && \
     rm -rf /tmp/kwin-system76-scheduler-integration && \
-    rm -rf /tmp/wallpaper-engine-kde-plugin \
-; else \
-    rpm-ostree override replace \
-    --experimental \
-    --from repo=copr:copr.fedorainfracloud.org:kylegospo:gnome-vrr \
-        mutter \
-        mutter-common \
-        gnome-control-center \
-        gnome-control-center-filesystem \
-        xorg-x11-server-Xwayland && \
-    rpm-ostree install \
-        steamdeck-backgrounds \
-        gradience \
-        gnome-shell-extension-user-theme \
-        gnome-shell-extension-gsconnect \
-        gnome-shell-extension-system76-scheduler \
-        gnome-shell-extension-caribou-blocker \
-        gnome-shell-extension-compiz-windows-effect \
-        gnome-shell-extension-just-perfection \
-        gnome-shell-extension-blur-my-shell \
-        gnome-shell-extension-hanabi \
-        rom-properties-gtk3 \
-        openssh-askpass && \
-    rpm-ostree override remove \
-        gnome-classic-session \
-        gnome-tour \
-        gnome-extensions-app \
-; fi
+    rm -rf /tmp/wallpaper-engine-kde-plugin
 
 # Install ROCM and Waydroid on non-Nvidia images
 # Install distrobox-git on Nvidia images (while needed)
@@ -186,14 +156,8 @@ RUN rm /usr/share/applications/shredder.desktop && \
     systemctl --global enable ublue-update.timer && \
     systemctl enable bazzite-hardware-setup.service && \
     systemctl --global enable bazzite-user-setup.service && \
-    if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
-        sed -i '/^PRETTY_NAME/s/Kinoite/Bazzite/' /usr/lib/os-release && \
-        systemctl --global enable com.system76.Scheduler.dbusproxy.service \
-    ; else \
-        rm /usr/share/applications/yad-icon-browser.desktop && \
-        rm /usr/share/applications/com.github.rafostar.Clapper.desktop && \
-        sed -i '/^PRETTY_NAME/s/Silverblue/Bazzite GNOME/' /usr/lib/os-release \
-    ; fi && \
+    sed -i '/^PRETTY_NAME/s/Kinoite/Bazzite/' /usr/lib/os-release && \
+    systemctl --global enable com.system76.Scheduler.dbusproxy.service && \
     if grep -qv "nvidia" <<< "${IMAGE_NAME}"; then \
         systemctl disable waydroid-container.service && \
         rm /usr/share/wayland-sessions/weston.desktop \
@@ -283,17 +247,11 @@ RUN rpm-ostree override replace \
     ; fi
 
 # Configure KDE & GNOME
-RUN if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
-    rpm-ostree override remove \
+RUN rpm-ostree override remove \
         steamdeck-kde-presets-desktop && \
     rpm-ostree install \
-        steamdeck-kde-presets \
-; else \
-    rpm-ostree install \
-        gnome-shell-extension-bazzite-menu \
-        gnome-shell-extension-search-light \
-        sddm \
-; fi
+        steamdeck-kde-presets
+    ; fi
 
 # Install new packages
 # Dock updater - done manually due to proprietary parts preventing it from being on Copr
@@ -343,15 +301,8 @@ RUN rpm-ostree install \
         wine-core \
         winetricks \
         protontricks && \
-    if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
         rpm-ostree override remove \
-            gamemode \
-    ; else \
-        rpm-ostree override remove \
-            gamemode \
-            gnome-shell-extension-gamemode \
-            gnome-shell-extension-appindicator \
-    ; fi
+            gamemode
 
 # Cleanup & Finalize
 RUN rm /usr/share/applications/wine*.desktop && \
@@ -376,13 +327,7 @@ RUN rm /usr/share/applications/wine*.desktop && \
     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/_copr_kylegospo-wallpaper-engine-kde-plugin.repo && \
     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/_copr_ycollet-audinux.repo && \
     if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
-        systemctl enable plasma-autologin.service \
-    ; else \
-        systemctl mask power-profiles-daemon.service && \
-        systemctl disable gdm.service && \
-        systemctl enable sddm.service && \
-        systemctl enable gnome-autologin.service \
-    ; fi && \
+        systemctl enable plasma-autologin.service && \
     systemctl enable jupiter-fan-control.service && \
     systemctl enable btrfs-dedup@run-media-mmcblk0p1.timer && \
     systemctl enable vpower.service && \
