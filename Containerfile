@@ -250,7 +250,6 @@ RUN rpm-ostree override remove \
         steamdeck-kde-presets-desktop && \
     rpm-ostree install \
         steamdeck-kde-presets
-    ; fi
 
 # Install new packages
 # Dock updater - done manually due to proprietary parts preventing it from being on Copr
