@@ -106,7 +106,6 @@ screens:
           - Google Chrome: com.google.Chrome
           - LibreWolf: io.gitlab.librewolf-community
           - Microsoft Edge: com.microsoft.Edge
-          - Opera: com.opera.Opera
         Gaming:
           description: "Rock and Stone!"
           default: false
@@ -132,6 +131,8 @@ screens:
           - SuperTux: org.supertuxproject.SuperTux
           - SuperTuxKart: net.supertuxkart.SuperTuxKart
           - TeamSpeak: com.teamspeak.TeamSpeak
+          - MangoHUD for most Flatpaks: org.freedesktop.Platform.VulkanLayer.MangoHud/23.08
+          - MangoHUD for older Flatpaks: org.freedesktop.Platform.VulkanLayer.MangoHud/22.08
         Emulation:
           description: Play games like it's 1972
           default: false
@@ -161,6 +162,9 @@ screens:
           default: false
           packages:
           - OBS Studio: com.obsproject.Studio
+          - VkCapture for OBS: com.obsproject.Studio.Plugin.OBSVkCapture/x86_64/stable
+          - VkCapture Support for newer Flatpaks: org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/23.08
+          - VkCapture Support for older Flatpaks: org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/22.08
           - Boatswain for Streamdeck: com.feaneron.Boatswain
         Music:
           description: "Rock and Roll!"
@@ -170,6 +174,7 @@ screens:
           - Spotify: com.spotify.Client
           - Strawberry Music Player: org.strawberrymusicplayer.strawberry
           - Tidal-hifi: com.mastermindzh.tidal-hifi
+          - G4Music: com.github.neithern.g4music
         Office/Productivity:
           description: Bow to Capitalism
           default: false
@@ -206,6 +211,17 @@ screens:
           - qBittorrent: org.qbittorrent.qBittorrent
           - Syncthing: com.github.zocker_160.SyncThingy
           - VLC: org.videolan.VLC
+          - Video Downloader: com.github.unrud.VideoDownloader
+          - Mission Center (Task Manager Alternative): io.missioncenter.MissionCenter
+        Video/Audio Production:
+          description: All the things you need to create your own content
+          default: false
+          packages:
+          - Audacity: org.audacityteam.Audacity
+          - Kdenlive: org.kde.kdenlive
+          - Blender: org.blender.Blender
+          - Aviator (AV1 Encoding GUI): net.natesales.Aviator
+          - Video Trimmer: org.gnome.gitlab.YaLTeR.VideoTrimmer
   theme:
     source: yafti.screen.title
     values:
