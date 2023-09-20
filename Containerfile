@@ -100,6 +100,7 @@ RUN if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
         steamdeck-kde-presets-desktop \
         wallpaper-engine-kde-plugin \
         kdeconnectd \
+        bismuth \
         rom-properties-kf5 && \
     rpm-ostree override replace \
     --experimental \
