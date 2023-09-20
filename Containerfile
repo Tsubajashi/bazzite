@@ -74,6 +74,16 @@ RUN rpm-ostree install \
     wmctrl \
     yad \
     f3 \
+    podman-plugins \
+    cockpit-bridge \
+    cockpit-machines \
+    cockpit-networkmanager \
+    cockpit-ostree \
+    cockpit-pcp \
+    cockpit-podman \
+    cockpit-selinux \
+    cockpit-storaged \
+    cockpit-system \
     pulseaudio-utils \
     twitter-twemoji-fonts \
     lato-fonts \
@@ -125,6 +135,9 @@ RUN if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
         gnome-shell-extension-hanabi \
         gnome-shell-extension-pop-shell \
         gnome-shell-extension-caffeine \
+        gnome-shell-extension-dash-to-dock \
+        gnome-shell-extension-appindicator \
+        papirus-icon-theme \
         rom-properties-gtk3 \
         openssh-askpass && \
     rpm-ostree override remove \
