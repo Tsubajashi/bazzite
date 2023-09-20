@@ -126,6 +126,8 @@ RUN if grep -q "kinoite" <<< "${BASE_IMAGE_NAME}"; then \
         gnome-shell-extension-just-perfection \
         gnome-shell-extension-blur-my-shell \
         gnome-shell-extension-hanabi \
+        gnome-shell-extension-pop-shell \
+        gnome-shell-extension-caffeine \
         rom-properties-gtk3 \
         openssh-askpass && \
     rpm-ostree override remove \
